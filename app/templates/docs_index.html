@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Docs — Cost Optimization Platform{% endblock %}
+{% block content %}
+<h2>Docs</h2>
+<p class="meta-line">Open a doc, then use "Copy for Confluence" — it copies the rendered content as rich HTML, so pasting into a Confluence page keeps headings, bold, lists, and tables. No API token or connection needed for this; you paste it yourself.</p>
+{% for d in docs %}
+<div class="card">
+  <a class="epic-link" href="/docs/{{ d.slug }}">{{ d.title }}</a>
+</div>
+{% endfor %}
+{% endblock %}

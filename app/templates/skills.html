@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Skills — Cost Optimization Platform{% endblock %}
+{% block content %}
+<h2>Skills</h2>
+<p class="meta-line">Custom skills live in <code>.claude/skills/</code>; vendored official/token-efficiency skills are copied into <code>.claude/skills/vendored/</code> so they ship with this repo.</p>
+{% for s in skills %}
+<div class="card">
+  <strong>{{ s.name }}</strong>
+  <span class="badge {{ 'custom' if s.kind == 'custom' else 'vendored' }}">{{ s.kind }}</span>
+  <div class="meta-line">{{ s.meta.description }}</div>
+</div>
+{% endfor %}
+{% endblock %}

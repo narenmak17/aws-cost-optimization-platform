@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}{{ title }} — Cost Optimization Platform{% endblock %}
+{% block content %}
+<p><a href="/docs">&larr; back to docs</a></p>
+<div class="doc-toolbar">
+  <button class="copy-btn" onclick="copyForConfluence('doc-content', this)">📋 Copy for Confluence</button>
+</div>
+<div class="card" id="doc-content">
+  {{ body_html | safe }}
+</div>
+{% endblock %}

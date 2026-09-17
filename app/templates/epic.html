@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}{{ epic.meta.title }}{% endblock %}
+{% block content %}
+<p><a href="/">&larr; back to backlog</a></p>
+<h2>{{ epic.meta.title }}</h2>
+<div class="meta-line">driver: <code>{{ epic.meta.driver }}</code> · status: {{ epic.meta.status }}</div>
+<div class="card">{{ epic.body_html | safe }}</div>
+
+{% for feat in epic.features %}
+<h3>{{ feat.meta.title }}</h3>
+<div class="card">
+  {{ feat.body_html | safe }}
+  {% for story in feat.stories %}
+    <div style="border-top:1px solid var(--border); margin-top:10px; padding-top:10px;">
+      <strong>{{ story.meta.title }}</strong>
+      <span class="badge">{{ story.meta.points }} pts</span>
+      <span class="meta-line">status: {{ story.meta.status }}</span>
+      <div>{{ story.body_html | safe }}</div>
+    </div>
+  {% endfor %}
+</div>
+{% endfor %}
+{% endblock %}

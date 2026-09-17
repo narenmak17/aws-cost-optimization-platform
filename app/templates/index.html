@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Backlog — Cost Optimization Platform{% endblock %}
+{% block content %}
+<div class="stat-row">
+  <div class="stat"><div class="n">{{ stats.epics }}</div><div class="l">Epics</div></div>
+  <div class="stat"><div class="n">{{ stats.features }}</div><div class="l">Features</div></div>
+  <div class="stat"><div class="n">{{ stats.stories }}</div><div class="l">Stories</div></div>
+  <div class="stat"><div class="n">{{ stats.skills }}</div><div class="l">Skills</div></div>
+  <div class="stat"><div class="n">{{ stats.agents }}</div><div class="l">Agents</div></div>
+</div>
+
+<p class="meta-line">Illustrative backlog — not yet reconciled with the existing PPT backlog. See <code>STATE.md</code>.</p>
+
+<h2>Epics</h2>
+{% for epic in epics %}
+<div class="card">
+  <a class="epic-link" href="/epic/{{ epic.meta.id }}">{{ epic.meta.title }}</a>
+  <div class="meta-line">driver: <code>{{ epic.meta.driver }}</code> · status: {{ epic.meta.status }} · {{ epic.features|length }} feature(s)</div>
+  {% for feat in epic.features %}
+    <div style="margin-left:16px; font-size:0.88rem; margin-bottom:4px;">
+      &rsaquo; {{ feat.meta.title }} <span style="color:var(--dim)">({{ feat.stories|length }} story/stories)</span>
+    </div>
+  {% endfor %}
+</div>
+{% endfor %}
+{% endblock %}

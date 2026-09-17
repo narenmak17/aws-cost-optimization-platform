@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Agents — Cost Optimization Platform{% endblock %}
+{% block content %}
+<h2>Agents</h2>
+{% for a in agents %}
+<div class="card">
+  <strong>{{ a.name }}</strong>
+  <span class="badge">{{ a.meta.model }}</span>
+  {% if a.meta.approval_required %}<span class="badge" style="background:#f6d9d9; color:var(--crit)">approval required</span>{% endif %}
+  <div class="meta-line">{{ a.meta.description }}</div>
+  <div>{{ a.body_html | safe }}</div>
+</div>
+{% endfor %}
+{% endblock %}

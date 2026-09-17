@@ -1,0 +1,14 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+*.egg-info/
+
+# Never commit real AWS exports/credentials
+dashboard/exports/*
+!dashboard/exports/.gitkeep
+.aws/
+*.pem
+.env
+
+.DS_Store

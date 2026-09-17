@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}Cost Optimization Platform{% endblock %}</title>
+<style>
+  :root{
+    --bg:#f7f6f3; --surface:#fff; --border:#e0ddd4; --text:#222;
+    --dim:#726b5c; --accent:#b5651d; --good:#3e7a4f; --warn:#a8791a; --crit:#a83e3e;
+  }
+  *{box-sizing:border-box}
+  body{margin:0; font-family:-apple-system,Segoe UI,Inter,sans-serif; background:var(--bg); color:var(--text)}
+  header{background:var(--surface); border-bottom:1px solid var(--border); padding:14px 24px; display:flex; align-items:center; gap:24px; flex-wrap:wrap}
+  header h1{font-size:1.05rem; margin:0; font-weight:650}
+  nav a{color:var(--dim); text-decoration:none; font-size:0.9rem; margin-right:16px}
+  nav a:hover, nav a.active{color:var(--accent); text-decoration:underline}
+  main{max-width:1000px; margin:0 auto; padding:28px 20px 80px}
+  .badge{display:inline-block; font-size:0.68rem; text-transform:uppercase; letter-spacing:0.04em; font-weight:700; padding:2px 8px; border-radius:99px; background:#eee}
+  .badge.official{background:color-mix(in srgb, var(--good) 16%, transparent); color:var(--good)}
+  .badge.custom{background:color-mix(in srgb, var(--accent) 16%, transparent); color:var(--accent)}
+  .badge.vendored{background:#e4e0d5; color:var(--dim)}
+  .card{background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:16px 18px; margin-bottom:14px}
+  .stat-row{display:flex; gap:14px; margin-bottom:24px; flex-wrap:wrap}
+  .stat{background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:10px 16px; text-align:center; min-width:80px}
+  .stat .n{font-size:1.4rem; font-weight:700; color:var(--accent)}
+  .stat .l{font-size:0.72rem; color:var(--dim); text-transform:uppercase}
+  a.epic-link{color:var(--text); text-decoration:none; font-weight:650}
+  a.epic-link:hover{color:var(--accent)}
+  .meta-line{font-size:0.8rem; color:var(--dim); margin:2px 0 8px}
+  code{background:#f0eee7; padding:1px 5px; border-radius:4px; font-size:0.85em}
+  h2{font-size:1.15rem; margin:28px 0 10px}
+  h3{font-size:0.98rem; margin:16px 0 6px}
+  .copy-btn{
+    display:inline-flex; align-items:center; gap:6px;
+    background:var(--surface); border:1px solid var(--border); border-radius:6px;
+    padding:6px 12px; font-size:0.82rem; font-weight:600; color:var(--text);
+    cursor:pointer; font-family:inherit;
+  }
+  .copy-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .copy-btn.copied{background:color-mix(in srgb, var(--good) 14%, transparent); color:var(--good); border-color:var(--good)}
+  .doc-toolbar{display:flex; justify-content:flex-end; margin-bottom:10px}
+</style>
+</head>
+<body>
+<header>
+  <h1>AWS Cost Optimization Platform</h1>
+  <nav>
+    <a href="/">Backlog</a>
+    <a href="/skills">Skills</a>
+    <a href="/agents">Agents</a>
+    <a href="/docs">Docs</a>
+  </nav>
+</header>
+<main>
+{% block content %}{% endblock %}
+</main>
+<script>
+// Copies the rendered HTML of a doc so pasting into Confluence (or Word, Google
+// Docs, etc.) keeps headings/bold/lists/tables — Confluence's editor accepts
+// pasted rich HTML and converts it to its native storage format automatically.
+function copyForConfluence(sourceId, btn) {
+  const el = document.getElementById(sourceId);
+  if (!el) return;
+  const html = el.innerHTML;
+  const text = el.innerText;
+  try {
+    const item = new ClipboardItem({
+      "text/html": new Blob([html], {type: "text/html"}),
+      "text/plain": new Blob([text], {type: "text/plain"}),
+    });
+    navigator.clipboard.write([item]).then(() => flashCopied(btn));
+  } catch (e) {
+    // Fallback for browsers without ClipboardItem HTML support
+    navigator.clipboard.writeText(text).then(() => flashCopied(btn));
+  }
+}
+function flashCopied(btn) {
+  if (!btn) return;
+  const original = btn.textContent;
+  btn.textContent = "Copied ✓";
+  btn.classList.add("copied");
+  setTimeout(() => { btn.textContent = original; btn.classList.remove("copied"); }, 1800);
+}
+</script>
+</body>
+</html>
