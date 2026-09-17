@@ -159,4 +159,4 @@ if __name__ == "__main__":
     # debug=True's reloader forks a child process, which doesn't survive
     # being spawned through Command Deck's nested minimized-window chain
     # (VBS -> cmd -> start /min -> cmd) reliably. Keep this False.
-    app.run(debug=False, port=5060)
+    app.run(debug=False, port=5060, threaded=True)
