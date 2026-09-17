@@ -44,7 +44,7 @@ pip install -r requirements.txt
 python app.py
 ```
 
-Then open http://127.0.0.1:5050
+Then open http://127.0.0.1:5060
 
 No AWS credentials required to run the UI. It's a local review tool for the backlog and design artifacts, not a live cost dashboard — that's the separate CUDOS deployment described in `docs/design-plan.md` §10.
 
