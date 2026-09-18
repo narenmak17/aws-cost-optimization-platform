@@ -44,10 +44,13 @@ All AWS-specific claims below were fetched from primary AWS docs/repos, not reca
 
 | Agent | Model | Tools | Trust level |
 |---|---|---|---|
+| `orchestrator` | Sonnet | routes to specialists below, sequences dependent steps, no direct AWS/Jira/Confluence tool calls of its own | Coordination only — never implements, never approves |
 | `cost-analyst` | Sonnet | multi-account-cost-connector, cost-driver-triage, aws-billing-and-cost-management | Read-only |
-| `wa-reviewer` | Sonnet, escalate to Opus for cross-account architecture calls | cost-optimization-review, wa-guardrails, architecture-decision-record | Proposes only — never applies |
+| `wa-reviewer` | Sonnet, escalate to Opus for cross-account architecture calls | cost-optimization-review, wa-guardrails, architecture-decision-record | Reviewer — proposes only, never applies, never reviews its own prior output in the same context |
 | `bootstrap-operator` | Sonnet + mandatory human approval | profile-bootstrap, aws-iam | Write-capable — the one exception |
 | `sprint-planner` | Haiku 4.5 | sprint-backlog-sync | Bookkeeping only |
+
+`orchestrator` and `wa-reviewer` implement the orchestrator/reviewer pattern described in [`docs/dev-methodologies/multi-agent-orchestration.md`](dev-methodologies/multi-agent-orchestration.md): the orchestrator decomposes and routes sprint work across the other agents; `wa-reviewer` independently checks specialist output against guardrails/spec before anything account-touching is considered done. Neither role does the other's job — an orchestrator that starts analyzing costs itself, or a reviewer that shares the implementer's session context, has collapsed the pattern back into single-agent self-review.
 
 ## 5. Guardrails & trust boundary
 
@@ -56,7 +59,15 @@ Following the `wa-guardrails` pattern (preventive + detective, tied to a control
 - Profile bootstrap requires human (DevOps) approval before any IAM change.
 - No agent applies an SCP/Config rule directly — proposals only, human merges and deploys.
 - AWS Budget Actions + SCP triggers as an independent backstop against runaway test-account spend.
-- Every architecture decision logged via `architecture-decision-record`.
+- Every architecture decision logged via `architecture-decision-record` (see [`docs/dev-methodologies/adr.md`](dev-methodologies/adr.md) for the concrete convention).
+- `orchestrator` cannot bypass `wa-reviewer` for anything write-capable or account-touching — routing does not imply approval (see agent table above and §4).
+
+### Skill routing for rigor vs. efficiency
+
+Not every step in a sprint deserves the same cost/rigor tradeoff. This project routes explicitly:
+- **`fable-mode`** (the five-gate reasoning discipline: scope, evidence, adversarial reasoning, verification, calibrated reporting) is mandatory for `wa-reviewer`'s review pass on anything account-touching, IAM-related, or feeding a savings claim that will be reported to stakeholders — a wrong number or a wrong IAM policy here is expensive to walk back.
+- **`token-efficiency` / `ponytail`** apply to `orchestrator`'s routing/sequencing work and `sprint-planner`'s bookkeeping — mechanical, low-stakes, no reason to spend extra reasoning tokens on deciding which specialist handles a task next.
+- Default assumption when unclear: route account-touching or stakeholder-facing work through `fable-mode` rigor; route internal bookkeeping/coordination through the efficiency skills. See [`docs/dev-methodologies/multi-agent-orchestration.md`](dev-methodologies/multi-agent-orchestration.md) for how this maps onto the agent roster.
 
 ## 6. Repo skeleton
 

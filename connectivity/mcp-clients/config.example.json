@@ -1,0 +1,15 @@
+{
+  "_comment": "Copy this file to config.json (git-ignored) and fill in real values. Never commit config.json.",
+  "atlassian": {
+    "confluence_url": "https://confluence.yourcompany.com",
+    "jira_url": "https://jira.yourcompany.com",
+    "confluence_spaces_filter": "COSTOPT,FINOPS",
+    "jira_projects_filter": "COSTOPT",
+    "read_only": true,
+    "personal_token_env_var": "ATLASSIAN_PAT"
+  },
+  "gitlab": {
+    "url": "https://gitlab.yourcompany.com",
+    "transport": "http"
+  }
+}

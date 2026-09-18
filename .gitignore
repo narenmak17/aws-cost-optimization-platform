@@ -10,5 +10,6 @@ dashboard/exports/*
 .aws/
 *.pem
 .env
+connectivity/mcp-clients/config.json
 
 .DS_Store
